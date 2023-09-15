@@ -1,9 +1,6 @@
 # dl.py
 
-a super simple python script which allows users to extract audio from video hosting webistes
-more features are planned, such as
-- downloading higest quality video
-- validation of urls
+a super simple python script which allows users to extract audio from video hosting websites
 
 ## requirements
 - yt-dlp
