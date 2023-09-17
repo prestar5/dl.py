@@ -1,23 +1,66 @@
 from yt_dlp import YoutubeDL
+from urllib.parse import urlparse
 
-print('dl.py - v0.1a')
+# defines what a valid url is
+def is_valid_url(url):
+    try:
+        result = urlparse(url)
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
+
+print('dl.py - v0.2a')
 print('***This script requires yt-dlp and ffmpeg!***')
 print('For a full list of supported sites, go to this link: https://github.com/yt-dlp/yt-dlp/blob/release/supportedsites.md \n')
 
-# asks user to input url
-input_url = input("Enter a URL: ")
+# asks user to input url, additionally validates if it is a url or not
+while True:
+    input_url = input("Enter a URL: ")
+    if is_valid_url(input_url):
+        break
+    else:
+        print("Invalid URL. Please enter a valid URL.")
 
-# presets
+# defines the avaliable options to use, being video and audio
+options = ['video', 'audio']
+
+# after user is prompted to enter url the user is then asked to download either video or audio
+print("Options:")
+for index, item in enumerate(options):
+    print(f'{index+1}) {item}')
+
+user_input = input("Type in the number corresponding to the option: ")
+
+# validates options
+while user_input not in map(str, range(1, len(options) + 1)):
+    print("Invalid input. Please choose a valid option.")
+    user_input = input("Type in the number corresponding to the option: ")
+
+# converts user choice to integer
+user_choice = int(user_input)
+
+# presets for video/audio options
+video = {
+    'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    'postprocessors': [{
+        'key': 'FFmpegVideoConvertor',
+        'preferedformat': 'mp4',
+    }],
+}
+
 audio = {
-    'format': 'mp3/bestaudio/best',
+    'format': 'bestaudio/best',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
-    }]
-    }
+    }],
+}
 
-with YoutubeDL(audio) as ydl:
-    ydl.download(input_url)
+# if the integer selected equals to 1, the program will download a video, anything else and it will download audio
+if user_choice == 1:
+    ydl_opts = video
+else:
+    ydl_opts = audio
 
-
-#>todo: add an option for best quality mp4, maybe with a menu or something idk
+with YoutubeDL(ydl_opts) as ydl:
+    ydl.download([input_url])
