@@ -36,6 +36,11 @@ while user_input not in map(str, range(1, len(options) + 1)):
     print("Invalid input. Please choose a valid option.")
     user_input = input("Type in the number corresponding to the option: ")
 
+# miswift 25/09/2023 18:49 what about you add a cropping setting to video or songs of your dl.py?
+# i feel like this would be a good idea to implement but the thing is it might be annoying for some users as that might not want to crop their videos every single
+# time they download someting, might implement some sort of configuration json file which allows users to enable/disable features of the program, for example
+# they could make it so that they can change the download directory of audio and video files in it as well as enabling the feature i am thinking of implementing
+
 # converts user choice to integer
 user_choice = int(user_input)
 
